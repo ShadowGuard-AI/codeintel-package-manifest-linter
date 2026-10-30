@@ -1,3 +1,5 @@
+![Banner](banner.png)
+
 # codeintel-Package-Manifest-Linter
 Validates package manifest files (e.g., `package.json`, `requirements.txt`, `pom.xml`) against common best practices and identifies potential dependency issues or misconfigurations. - Focused on Tools for static code analysis, vulnerability scanning, and code quality assurance
 
