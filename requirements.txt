@@ -1,4 +1,3 @@
-bandit>=1.0.0
-flake8>=1.0.0
-pylint>=1.0.0
-pyre-check>=1.0.0
+# Standard library only. ManifestLinter parses JSON and text with
+# json and os; bandit, flake8, pylint and pyre-check were listed
+# here before but no code in this repo invokes them.

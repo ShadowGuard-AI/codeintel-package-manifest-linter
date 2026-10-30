@@ -2,7 +2,6 @@ import argparse
 import json
 import logging
 import os
-import re
 import sys
 from typing import List, Dict, Any
 
@@ -57,8 +56,11 @@ class ManifestLinter:
             elif self.manifest_type == "pip":
                 with open(self.manifest_file, 'r') as f:
                     data = f.readlines()
-                # Convert to a dictionary-like structure for easier processing
-                return {"dependencies": [line.strip() for line in data if line.strip() and not line.startswith("#")]}
+                # Convert to a dictionary-like structure for easier processing.
+                # The comment test runs on the stripped line: an indented
+                # comment is still a comment, and the old raw-line test
+                # turned it into a phantom dependency with no version.
+                return {"dependencies": [line.strip() for line in data if line.strip() and not line.strip().startswith("#")]}
             elif self.manifest_type == "maven":
                 # Implement XML parsing and data extraction for Maven POM files here
                 # (requires using an XML parsing library like lxml or ElementTree)
@@ -120,7 +122,10 @@ class ManifestLinter:
         for dep_type in ["dependencies", "devDependencies"]:
             if dep_type in self.manifest_data:
                 for dep, version in self.manifest_data[dep_type].items():
-                  if "*" in version:
+                  # A version is normally a string, but a malformed or
+                  # workspace style entry can be a dict; skip the
+                  # wildcard test there instead of crashing the lint.
+                  if isinstance(version, str) and "*" in version:
                       messages.append(f"Warning: Dependency {dep} has a wildcard version: {version}")
 
         return messages

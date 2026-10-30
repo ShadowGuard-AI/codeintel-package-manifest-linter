@@ -1,7 +1,7 @@
 ![Banner](banner.png)
 
 # codeintel-Package-Manifest-Linter
-Validates package manifest files (e.g., `package.json`, `requirements.txt`, `pom.xml`) against common best practices and identifies potential dependency issues or misconfigurations. - Focused on Tools for static code analysis, vulnerability scanning, and code quality assurance
+Lints npm `package.json` and pip `requirements.txt` manifests against common best practices and identifies potential dependency issues or misconfigurations. Maven `pom.xml` is not linted: choosing type maven prints a not-implemented notice, which is the only message that type produces. - Focused on Tools for static code analysis, vulnerability scanning, and code quality assurance
 
 ## Install
 `git clone https://github.com/ShadowGuardAI/codeintel-package-manifest-linter`
