@@ -104,6 +104,15 @@ class ManifestLinter:
         """
         messages = []
 
+        # npm requires a name and a version, so a manifest missing
+        # either one, or holding an empty value, is warned about the
+        # same way the other missing fields below are.
+        if not self.manifest_data.get("name"):
+            messages.append("Warning: 'name' field is missing in package.json")
+
+        if not self.manifest_data.get("version"):
+            messages.append("Warning: 'version' field is missing in package.json")
+
         # Example: Check for missing description
         if not self.manifest_data.get("description"):
             messages.append("Warning: 'description' field is missing in package.json")
