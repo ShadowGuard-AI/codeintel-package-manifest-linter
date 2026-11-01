@@ -49,6 +49,9 @@ class ManifestLinter:
             raise FileNotFoundError(f"Manifest file not found: {self.manifest_file}")
 
         try:
+            # I trust the type the caller named, not the file. A pip file
+            # passed as npm goes to the JSON loader and fails there, and
+            # the error talks about JSON rather than a mismatched type.
             if self.manifest_type == "npm":
                 with open(self.manifest_file, 'r') as f:
                     data = json.load(f)
@@ -150,6 +153,9 @@ class ManifestLinter:
 
         if "dependencies" in self.manifest_data:
             for dep in self.manifest_data["dependencies"]:
+                # I count any of these operators as specified, including a
+                # bare >= with no upper bound. Only a plain name with no
+                # operator at all earns the warning on this line.
                 if "==" not in dep and ">=" not in dep and "<=" not in dep and "~=" not in dep:
                     messages.append(f"Warning: Dependency '{dep}' does not have a specific version specified. Consider using '==' for reproducible builds.")
 
@@ -165,6 +171,9 @@ class ManifestLinter:
             List[str]: A list of Maven-specific linting messages.
         """
         #Implement XML Parsing and extraction here
+        # I return this as a linting message, so main reads it the
+        # same as a real finding and exits 1. A Maven run can never
+        # report clean until this function does real work.
         return ["Maven linting is not fully implemented yet.  This is a placeholder."]
 
 
